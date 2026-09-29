@@ -100,16 +100,16 @@ class ClanSettingsScreen(Screens):
             elif event.ui_element == self.clan_stats_button:
                 self.open_clan_stats()
                 return
+            elif event.ui_element == self.save_default_button:
+                # NEED TO MAKE SETTINGS_SAVE WORK!!
+                # self.save_default()
+                # default_settings_save(self)
+                self.settings_changed = False
+                self.update_save_button()
+                return
             self.handle_checkbox_events(event)
             self.menu_button_pressed(event)
             self.mute_button_pressed(event)
-        elif event.ui_element == self.save_default_button:
-                        # NEED TO MAKE SETTINGS_SAVE WORK!!
-                        #self.save_default()
-                        # default_settings_save(self)
-                        self.settings_changed = False
-                        self.update_save_button()
-                        return
 
     def handle_checkbox_events(self, event):
         """
@@ -220,13 +220,13 @@ class ClanSettingsScreen(Screens):
         )
 
         self.save_default_button = UISurfaceImageButton(
-                    ui_scale(pygame.Rect((0, 550), (150, 30))),
-                    "buttons.save_as_default",
-                    get_button_dict(ButtonStyles.SQUOVAL, (150, 30)),
-                    object_id="@buttonstyles_squoval",
-                    manager=MANAGER,
-                    anchors={"centerx": "centerx"},
-                )
+            ui_scale(pygame.Rect((0, 550), (150, 30))),
+            "buttons.save_as_default",
+            get_button_dict(ButtonStyles.SQUOVAL, (150, 30)),
+            object_id="@buttonstyles_squoval",
+            manager=MANAGER,
+            anchors={"centerx": "centerx"},
+        )
 
         rect = ui_scale(pygame.Rect((0, 0), (158, 36)))
         rect.bottomright = ui_scale_offset((-5, -25))
@@ -309,7 +309,7 @@ class ClanSettingsScreen(Screens):
         self.role_settings_button.disable()
         self.clear_sub_settings_buttons_and_text()
         self.sub_menu = "role"
-        self.save_default_button.show() 
+        self.save_default_button.show()
         self.refresh_checkboxes()
 
     def open_relation_settings(self):
