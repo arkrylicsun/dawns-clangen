@@ -103,6 +103,13 @@ class ClanSettingsScreen(Screens):
             self.handle_checkbox_events(event)
             self.menu_button_pressed(event)
             self.mute_button_pressed(event)
+        elif event.ui_element == self.save_default_button:
+                        # NEED TO MAKE SETTINGS_SAVE WORK!!
+                        #self.save_default()
+                        # default_settings_save(self)
+                        self.settings_changed = False
+                        self.update_save_button()
+                        return
 
     def handle_checkbox_events(self, event):
         """
@@ -214,7 +221,7 @@ class ClanSettingsScreen(Screens):
 
         self.save_default_button = UISurfaceImageButton(
                     ui_scale(pygame.Rect((0, 550), (150, 30))),
-                    "buttons.save_settings",
+                    "buttons.save_as_default",
                     get_button_dict(ButtonStyles.SQUOVAL, (150, 30)),
                     object_id="@buttonstyles_squoval",
                     manager=MANAGER,
@@ -476,3 +483,12 @@ class ClanSettingsScreen(Screens):
         TODO: DOCS
         """
         super().on_use()
+
+    def update_save_button(self):
+        """
+        Updates the disabled state the save button
+        """
+        if not self.settings_changed:
+            self.save_default_button.disable()
+        else:
+            self.save_default_button.enable()
