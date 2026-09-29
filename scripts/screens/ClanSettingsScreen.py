@@ -212,6 +212,15 @@ class ClanSettingsScreen(Screens):
             tool_tip_text="buttons.open_data_directory_tooltip",
         )
 
+        self.save_default_button = UISurfaceImageButton(
+                    ui_scale(pygame.Rect((0, 550), (150, 30))),
+                    "buttons.save_settings",
+                    get_button_dict(ButtonStyles.SQUOVAL, (150, 30)),
+                    object_id="@buttonstyles_squoval",
+                    manager=MANAGER,
+                    anchors={"centerx": "centerx"},
+                )
+
         rect = ui_scale(pygame.Rect((0, 0), (158, 36)))
         rect.bottomright = ui_scale_offset((-5, -25))
         self.fullscreen_toggle = UIImageButton(
@@ -275,6 +284,8 @@ class ClanSettingsScreen(Screens):
         del self.fullscreen_toggle
         self.game_settings_button.kill()
         del self.game_settings_button
+        self.save_default_button.kill()
+        del self.save_default_button
 
     def open_general_settings(self):
         """Opens and draws general_settings"""
@@ -282,7 +293,7 @@ class ClanSettingsScreen(Screens):
         self.general_settings_button.disable()
         self.clear_sub_settings_buttons_and_text()
         self.sub_menu = "general"
-
+        self.save_default_button.show()
         self.refresh_checkboxes()
 
     def open_roles_settings(self):
@@ -291,7 +302,7 @@ class ClanSettingsScreen(Screens):
         self.role_settings_button.disable()
         self.clear_sub_settings_buttons_and_text()
         self.sub_menu = "role"
-
+        self.save_default_button.show() 
         self.refresh_checkboxes()
 
     def open_relation_settings(self):
@@ -304,6 +315,7 @@ class ClanSettingsScreen(Screens):
         self.refresh_checkboxes()
 
     def open_clan_stats(self):
+        self.save_default_button.hide()
         self.enable_all_menu_buttons()
         self.clan_stats_button.disable()
         self.clear_sub_settings_buttons_and_text()
@@ -362,7 +374,7 @@ class ClanSettingsScreen(Screens):
 
         self.checkboxes_text["stat_box"] = pygame_gui.elements.UITextBox(
             "screens.clan_settings.stats_text",
-            ui_scale(pygame.Rect((150, 200), (530, 345))),
+            ui_scale(pygame.Rect((150, 200), (500, 345))),
             object_id=get_text_box_theme("#text_box_30_horizcenter"),
             text_kwargs={
                 "living": str(living_cats),
