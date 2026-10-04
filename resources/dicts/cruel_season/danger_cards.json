@@ -29,5 +29,11 @@
       "death_related.war_death_modifier": 340,
       "death_related.war_death_modifier_leader": 46
     }
+  },
+  "starcrossed_lovers": {
+    "cart_art": "danger/stolen_vitality.png",
+    "modifiers": {
+      "cruel_season.event.starcrossed_lovers": true
+    }
   }
 }
