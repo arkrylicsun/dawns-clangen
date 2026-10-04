@@ -31,7 +31,7 @@
     }
   },
   "starcrossed_lovers": {
-    "cart_art": "danger/stolen_vitality.png",
+    "card_art": "danger/stolen_vitality.png",
     "modifiers": {
       "cruel_season.event.starcrossed_lovers": true
     }
