@@ -78,6 +78,7 @@ from scripts.clan_package.cotc import (
 from scripts.clan_package.get_clan_cats import (
     find_alive_cats_with_rank,
     get_living_clan_cat_count,
+    get_random_player_clan_cat,
 )
 
 logger = logging.getLogger(__name__)
@@ -333,6 +334,8 @@ def one_moon():
             game.save_events()
         except:
             SaveErrorWindow(traceback.format_exc())
+
+    check_sinkhole()
 
 
 def update_afterlife_temper():
@@ -1696,3 +1699,38 @@ def check_missing_mentors():
 
 
 load_war_resources()
+
+
+def check_sinkhole(cat):
+    """The Sinkhole cruel card"""
+    if not get_config("cruel_season.event.sinkhole"):
+        return
+
+    if game.clan.age % 12 != 0:
+        return
+    percent_killed = random.randint(0, 50) / 100
+    cat_amount = get_living_clan_cat_count(Cat)
+
+    dead_kitties = []
+
+    # calculate the amount to die
+    cats_killed_amount = round(cat_amount * percent_killed)
+    print("DEBUG:", cats_killed_amount, "shall be lost to the sinkhole")
+
+    # kill random cats
+    for i in range(cats_killed_amount):
+        kitty = get_random_player_clan_cat(Cat, not_allowed=dead_kitties)
+        kitty.die()
+        dead_kitties.append(kitty)
+
+    print("Dead kitties:", dead_kitties)
+    for c in dead_kitties:
+        c.die()
+        # cat history
+        c.history.add_death(
+                    i18n.t("cruel_season.special_text.sinkhole_death"),
+                    other_cat=cat,
+                )
+        
+    # special event text
+    # something about lucky the clan is if none, less than 25% few, more than 25% more, 40+% broken
