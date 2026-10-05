@@ -6,6 +6,12 @@
     },
     "stolen_vitality_failed": "The price could not be paid in full; %{lead_name} pays the rest.",
     "stolen_vitality_sacrifice_history": "m_c paid the price for r_c's revival.",
-    "stolen_vitality_lead_history": "No cat remained to give their life for m_c's."
+    "stolen_vitality_lead_history": "No cat remained to give their life for m_c's.",
+    "starcrossed_lovers_base": {
+      "one": "yeahhh uhh soo m_c died and that killed %{dead_name} who's their mate",
+      "many": "yeahhh uhh soo m_c died and that killed %{dead_name} who are all their mate"
+    },
+    "starcrossed_lovers_cause_history": "As m_c's life faded, the stars aligned to take CHECK IF YOU CAN DO MULTIPLE CATS DUMBASS",
+    "starcrossed_lovers_effect_history": "ADD TEXT HERE DUMBASS"
   }
 }
