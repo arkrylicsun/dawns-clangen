@@ -2562,18 +2562,27 @@ class Cat:
             sorted_specific_list[idx - 1].ID if idx - 1 >= 0 else 0,
         )
 
-    def check_starcrossed_lovers(self) -> bool:
+    def check_starcrossed_lovers(self) -> Optional[str]:
         """Checks and kills cat mates if starcrossed lovers is active"""
         # ADD THE CONFIG HERE
         if not get_config("cruel_season.event.starcrossed_lovers"):
-            return False
+            return
+
+        if not self.mate:
+            return
 
         cat_mates = []
 
         for c in self.mate:
             c = Cat.fetch_cat(c)
             cat_mates.append(c)
-            print("DEBUG:", c.name, "is a mate of", self.name, "! and shall be KILLED! :3c")
+            print(
+                "DEBUG:",
+                c.name,
+                "is a mate of",
+                self.name,
+                "! and shall be KILLED! :3c",
+            )
 
         # kill cat mates
         # special txt
