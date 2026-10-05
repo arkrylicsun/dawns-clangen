@@ -2588,3 +2588,21 @@ load_leader_ceremonies()
 
 with open("resources/dicts/backstories.json", "r", encoding="utf-8") as read_file:
     BACKSTORIES = ujson.loads(read_file.read())
+
+
+def check_starcrossed_lovers(cat) -> bool:
+    """Checks and kills cat mates if starcrossed lovers is active"""
+    # ADD THE CONFIG HERE
+    if not get_config("cruel_season.event.starcrossed_lovers"):
+        return False
+
+    cat_mates = []
+
+    for c in cat.mate:
+        c = Cat.fetch_cat(c)
+        cat_mates.append(c)
+        print("DEBUG:", c.name, "is a mate of", cat.name, "! and shall be KILLED! :3c")
+
+    # kill cat mates
+    # special txt
+    # yuh
