@@ -33,7 +33,7 @@
   "sinkhole": {
     "card_art": "danger/for_the_throne.png",
     "modifiers": {
-      
+      "cruel_season.event.sinkhole": true
     }
   }
 }
