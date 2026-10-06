@@ -11,7 +11,6 @@
       "one": "yeahhh uhh soo m_c died and that killed %{dead_name} who's their mate",
       "many": "yeahhh uhh soo m_c died and that killed %{dead_name} who are all their mate"
     },
-    "starcrossed_lovers_cause_history": "As m_c's life faded, the stars aligned to take CHECK IF YOU CAN DO MULTIPLE CATS DUMBASS",
-    "starcrossed_lovers_effect_history": "ADD TEXT HERE DUMBASS"
+    "starcrossed_lovers_history": "m_c's path was always bound to end with {PRONOUN/m_c/poss} lover, r_c."
   }
 }
