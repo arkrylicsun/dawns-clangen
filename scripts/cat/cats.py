@@ -2576,10 +2576,7 @@ class Cat:
 
         for c in self.mate:
             c = Cat.fetch_cat(c)
-            
-            if c.status.group.is_afterlife:
-                continue
-            else:
+            if not c.dead:
                 cat_mates.append(c)
                 print(
                     "DEBUG:",
@@ -2599,7 +2596,14 @@ class Cat:
                 other_cat=self,
             )
         # special txt
+        text = i18n.t(
+                    "cruel_season.special_text.starcrossed_lovers_base",
+                    mate_name=str(self.name),
+                    dead_name=str(cat_names),
+                    count = len(cat_mates)
+                )
         # yuh
+        return text
 
 
 # ---------------------------------------------------------------------------- #
