@@ -6,7 +6,7 @@ import i18n
 import ujson
 import logging
 
-from scripts.cat.cats import Cat
+from scripts.cat.cats import Cat, check_starcrossed_lovers
 from scripts.cat.enums import CatAge, CatRank
 from scripts.clan_package.settings import get_clan_setting
 from scripts.clan_resources.freshkill import (
@@ -177,6 +177,8 @@ class Condition_Events:
                 if extra_text := check_stolen_vitality(cat, 1):
                     text += " " + extra_text
 
+            if extra_text := check_starcrossed_lovers(cat):
+                text += " " + extra_text
             possible_string_list = Condition_Events.ILLNESS_DEATH_STRINGS["starving"]
             event = random.choice(possible_string_list) + " " + text
             # first event in string lists is always appropriate for history formatting
@@ -618,6 +620,8 @@ class Condition_Events:
                     if extra_text := check_stolen_vitality(cat, 1):
                         event += " " + extra_text
 
+                if extra_text := check_starcrossed_lovers(cat):
+                    event += " " + extra_text
                 # add death to history
                 cat.history.add_death(
                     condition=illness, death_text=history_event.strip()
@@ -753,6 +757,9 @@ class Condition_Events:
                     event = event + " " + get_leader_life_notice(cat.name)
                     if extra_text := check_stolen_vitality(cat, 1):
                         event += " " + extra_text
+
+                if extra_text := check_starcrossed_lovers(cat):
+                    event += " " + extra_text
 
                 # add death to history
                 cat.history.add_death(condition=injury, death_text=history_text.strip())
@@ -949,6 +956,8 @@ class Condition_Events:
                     if extra_text := check_stolen_vitality(cat, 1):
                         event += " " + extra_text
 
+                if extra_text := check_starcrossed_lovers(cat):
+                    event += " " + extra_text
                 event_list.append(event)
 
                 # add to death history

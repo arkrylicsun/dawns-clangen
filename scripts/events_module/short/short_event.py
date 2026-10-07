@@ -3,7 +3,7 @@ from typing import List, Optional, Dict
 
 import i18n
 
-from scripts.cat.cats import Cat
+from scripts.cat.cats import Cat, check_starcrossed_lovers
 from scripts.cat.enums import CatAge, CatRank
 from scripts.cat.microservices.conditions import get_injured
 from scripts.cat.pelts import Pelt
@@ -614,6 +614,9 @@ class ShortEvent:
 
             else:
                 cat.die(body)
+            
+            if extra_text := check_starcrossed_lovers(cat):
+                self.additional_event_text += " " + extra_text
 
     def handle_mass_death(self):
         """

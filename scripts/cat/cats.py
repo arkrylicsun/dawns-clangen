@@ -530,8 +530,6 @@ class Cat:
                 fetched_cat.update_mentor()
         self.update_mentor()
 
-        self.check_starcrossed_lovers()
-
         # handle grief
         # since we just yeeted them to their afterlife, we gotta check their previous group affiliation, not current
         if (
@@ -2563,48 +2561,6 @@ class Cat:
             sorted_specific_list[idx - 1].ID if idx - 1 >= 0 else 0,
         )
 
-    def check_starcrossed_lovers(self) -> Optional[str]:
-        """Checks and kills cat mates if starcrossed lovers is active"""
-        # ADD THE CONFIG HERE
-        if not get_config("cruel_season.event.starcrossed_lovers"):
-            return
-
-        if not self.mate:
-            return
-
-        cat_mates = []
-
-        for c in self.mate:
-            c = Cat.fetch_cat(c)
-            if not c.dead:
-                cat_mates.append(c)
-                print(
-                    "DEBUG:",
-                    c.name,
-                    "is a mate of",
-                    self.name,
-                    "! and shall be KILLED! :3c",
-                )
-
-        cat_names = adjust_list_text([str(c.name) for c in cat_mates])
-
-        # kill cat mates
-        for c in cat_mates:
-            c.die()
-            c.history.add_death(
-                i18n.t("cruel_season.special_text.starcrossed_lovers_history"),
-                other_cat=self,
-            )
-        # special txt
-        text = i18n.t(
-                    "cruel_season.special_text.starcrossed_lovers_base",
-                    mate_name=str(self.name),
-                    dead_name=str(cat_names),
-                    count = len(cat_mates)
-                )
-        # yuh
-        return text
-
 
 # ---------------------------------------------------------------------------- #
 #                               END OF CAT CLASS                               #
@@ -2633,3 +2589,47 @@ load_leader_ceremonies()
 
 with open("resources/dicts/backstories.json", "r", encoding="utf-8") as read_file:
     BACKSTORIES = ujson.loads(read_file.read())
+
+
+def check_starcrossed_lovers(cat) -> Optional[str]:
+    """Checks and kills cat mates if starcrossed lovers is active"""
+    # ADD THE CONFIG HERE
+    if not get_config("cruel_season.event.starcrossed_lovers"):
+        return
+
+    if not cat.mate:
+        return
+
+    cat_mates = []
+
+    for c in cat.mate:
+        c = Cat.fetch_cat(c)
+        if not c.dead:
+            cat_mates.append(c)
+            print(
+                "DEBUG:",
+                c.name,
+                "is a mate of",
+                cat.name,
+                "! and shall be KILLED! :3c",
+            )
+
+    cat_names = adjust_list_text([str(c.name) for c in cat_mates])
+
+    # kill cat mates
+    for c in cat_mates:
+        c.die()
+        c.history.add_death(
+            i18n.t("cruel_season.special_text.starcrossed_lovers_history"),
+            other_cat=cat,
+        )
+    # special txt
+    text = i18n.t(
+        "cruel_season.special_text.starcrossed_lovers_base",
+        mate_name=str(cat.name),
+        dead_name=str(cat_names),
+        clan_name=str(game.clan.name),
+        count=len(cat_mates),
+    )
+    # yuh
+    return text
