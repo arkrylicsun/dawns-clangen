@@ -57,6 +57,7 @@ from scripts.housekeeping.datadir import get_save_dir
 from scripts.cat import microservices
 from scripts.cat.sprites.display_sprites import update_sprite, update_mask
 from scripts.events_module.text_adjust import (
+    adjust_list_text,
     event_text_adjust,
     leader_ceremony_text_adjust,
 )
@@ -2575,16 +2576,28 @@ class Cat:
 
         for c in self.mate:
             c = Cat.fetch_cat(c)
-            cat_mates.append(c)
-            print(
-                "DEBUG:",
-                c.name,
-                "is a mate of",
-                self.name,
-                "! and shall be KILLED! :3c",
-            )
+            
+            if c.status.group.is_afterlife:
+                continue
+            else:
+                cat_mates.append(c)
+                print(
+                    "DEBUG:",
+                    c.name,
+                    "is a mate of",
+                    self.name,
+                    "! and shall be KILLED! :3c",
+                )
+
+        cat_names = adjust_list_text([str(c.name) for c in cat_mates])
 
         # kill cat mates
+        for c in cat_mates:
+            c.die()
+            c.history.add_death(
+                i18n.t("cruel_season.special_text.starcrossed_lovers_history"),
+                other_cat=self,
+            )
         # special txt
         # yuh
 
