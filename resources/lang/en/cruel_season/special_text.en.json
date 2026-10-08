@@ -8,7 +8,7 @@
     "stolen_vitality_sacrifice_history": "m_c paid the price for r_c's revival.",
     "stolen_vitality_lead_history": "No cat remained to give their life for m_c's.",
     "starcrossed_lovers_base": {
-      "one": "As the ancestors of %{clan_name} past cradled %{mate_name} in their arms, %{dead_name} was soon to follow, joining {PRONOUN/m_c/poss} mate in the afterlife.",
+      "one": "As the ancestors of %{clan_name} past cradled %{mate_name} in their arms, %{dead_name} was soon to follow, joining %{mate_name} in the afterlife.",
       "many": "As the ancestors of %{clan_name} past cradled %{mate_name} in their arms, %{dead_name} were all soon to follow, joining their mate in the ranks of the afterlife."
     },
     "starcrossed_lovers_history": "m_c's path was always bound to end with {PRONOUN/m_c/poss} lover, r_c."
