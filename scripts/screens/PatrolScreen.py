@@ -28,6 +28,7 @@ from ..ui.generate_box import BoxStyles, get_box
 from ..ui.generate_button import get_button_dict, ButtonStyles
 from ..ui.icon import Icon
 from ..ui.windows.rel_change_details import RelChangeDetailWindow
+from scripts.config import get_config
 
 
 class PatrolScreen(Screens):
@@ -64,6 +65,7 @@ class PatrolScreen(Screens):
         self.intro_image = None
         self.app_mentor = None
         self.able_cats = None
+        self.patrolling_cats = None
         self.current_patrol = None
         self.display_text = ""
         self.results_text = ""
@@ -1003,25 +1005,7 @@ class PatrolScreen(Screens):
         previous page buttons."""
         self.clear_cat_buttons()  # Clear all the cat buttons
 
-        self.able_cats = []
-
-        # ASSIGN TO ABLE CATS
-        for the_cat in Cat.all_cats_list:
-            if (
-                the_cat.ID not in game.patrolled
-                and the_cat.status.rank.is_allowed_to_patrol()
-                and the_cat.status.alive_in_player_clan
-                and the_cat not in self.current_patrol
-                and the_cat.can_work()
-            ):
-                if (
-                    the_cat.status.rank == CatRank.NEWBORN
-                    or constants.CONFIG["fun"]["all_cats_are_newborn"]
-                ):
-                    if constants.CONFIG["fun"]["newborns_can_patrol"]:
-                        self.able_cats.append(the_cat)
-                else:
-                    self.able_cats.append(the_cat)
+        self.get_patrolling_amount()
 
         if not self.able_cats:
             all_pages = []
@@ -1449,3 +1433,45 @@ class PatrolScreen(Screens):
         # Removes duplicates.
         patrol_set = list(patrol_list)
         return ", ".join(patrol_set)
+
+    def get_patrolling_amount(self):
+
+        if self.patrolling_cats:
+            return None
+        
+        if not self.patrolling_cats and game.patrolled:
+            return None
+
+        if not self.able_cats:
+            self.able_cats = []
+
+            # ASSIGN TO ABLE CATS
+            for the_cat in Cat.all_cats_list:
+                if (
+                    the_cat.ID not in game.patrolled
+                    and the_cat.status.rank.is_allowed_to_patrol()
+                    and the_cat.status.alive_in_player_clan
+                    and the_cat not in self.current_patrol
+                    and the_cat.can_work()
+                ):
+                    if (
+                        the_cat.status.rank == CatRank.NEWBORN
+                        or constants.CONFIG["fun"]["all_cats_are_newborn"]
+                    ):
+                        if constants.CONFIG["fun"]["newborns_can_patrol"]:
+                            self.able_cats.append(the_cat)
+                    else:
+                        self.able_cats.append(the_cat)
+
+        total_cats = len(self.able_cats) + len(game.patrolled)
+        percent = round(get_config("patrol_generation.patrolling_percent") * total_cats)
+        self.patrolling_cats = []
+
+        while len(self.patrolling_cats) < percent:
+            if not self.able_cats:
+                break
+            c = choice(self.able_cats)
+            if c not in self.patrolling_cats:
+                self.patrolling_cats.append(c)
+
+        print(percent, "cats can patrol. Chosen cats:", self.patrolling_cats)
