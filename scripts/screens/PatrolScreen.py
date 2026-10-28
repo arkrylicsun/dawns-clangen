@@ -1029,6 +1029,8 @@ class PatrolScreen(Screens):
         total_cats = len(self.able_cats) + len(game.patrolled)
         percent = round(get_config("patrol_generation.patrolling_percent") * total_cats)
 
+        # Getting stuck in a loop here! need to figure out a way to stop this from happening. Otherwise working
+
         while len(self.patrolling_cats) < percent:
             if not self.able_cats:
                 break
