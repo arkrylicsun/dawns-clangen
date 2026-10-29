@@ -1034,12 +1034,8 @@ class PatrolScreen(Screens):
             if not self.able_cats:
                 break
             c = choice(self.able_cats)
-            print("picked a kitty")
             if c not in self.patrolling_cats:
                 self.patrolling_cats.append(c)
-                print("appended kitty", len(self.patrolling_cats), "/", percent)
-
-        print(percent, "cats can patrol. Chosen cats:", self.patrolling_cats)
 
         if not self.patrolling_cats:
             all_pages = []
