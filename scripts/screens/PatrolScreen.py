@@ -1027,16 +1027,17 @@ class PatrolScreen(Screens):
                     self.able_cats.append(the_cat)
 
         total_cats = len(self.able_cats) + len(game.patrolled)
-        percent = round(get_config("patrol_generation.patrolling_percent") * total_cats)
+        percent = round(get_config("patrol_generation.patrolling_percent") * total_cats) - 1
 
         # Getting stuck in a loop here! need to figure out a way to stop this from happening. Otherwise working
-
         while len(self.patrolling_cats) < percent:
             if not self.able_cats:
                 break
             c = choice(self.able_cats)
+            print("picked a kitty")
             if c not in self.patrolling_cats:
                 self.patrolling_cats.append(c)
+                print("appended kitty", len(self.patrolling_cats), "/", percent)
 
         print(percent, "cats can patrol. Chosen cats:", self.patrolling_cats)
 
