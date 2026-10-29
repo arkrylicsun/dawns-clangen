@@ -107,8 +107,8 @@ class PatrolScreen(Screens):
 
     def handle_choose_cats_events(self, event):
         if event.ui_element == self.elements["random"]:
-            if self.patrolling_cats:
-                self.selected_cat = choice(self.patrolling_cats)
+            if self.able_cats:
+                self.selected_cat = choice(self.able_cats)
             else:
                 print(
                     "WARNING: attempted to select random cat for patrol from empty list of able cats"
@@ -141,15 +141,15 @@ class PatrolScreen(Screens):
                 if not get_clan_setting("random med cat"):
                     able_no_med = [
                         cat
-                        for cat in self.patrolling_cats
+                        for cat in self.able_cats
                         if not cat.status.rank.is_any_medicine_rank()
                     ]
                     if len(able_no_med) == 0:
-                        able_no_med = self.patrolling_cats
+                        able_no_med = self.able_cats
                     self.selected_cat = choice(able_no_med)
                 else:
-                    if self.patrolling_cats:
-                        self.selected_cat = choice(self.patrolling_cats)
+                    if self.able_cats:
+                        self.selected_cat = choice(self.able_cats)
                     else:
                         print(
                             "WARNING: attempted to select random cat for patrol from empty list of able cats"
@@ -163,14 +163,14 @@ class PatrolScreen(Screens):
                 if not get_clan_setting("random med cat"):
                     able_no_med = [
                         cat
-                        for cat in self.patrolling_cats
+                        for cat in self.able_cats
                         if not cat.status.rank.is_any_medicine_rank()
                     ]
                     if len(able_no_med) < 3:
-                        able_no_med = self.patrolling_cats
+                        able_no_med = self.able_cats
                     self.current_patrol += sample(able_no_med, k=3)
                 else:
-                    self.current_patrol += sample(self.patrolling_cats, k=3)
+                    self.current_patrol += sample(self.able_cats, k=3)
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["add_six"]:
@@ -178,14 +178,14 @@ class PatrolScreen(Screens):
                 if not get_clan_setting("random med cat"):
                     able_no_med = [
                         cat
-                        for cat in self.patrolling_cats
+                        for cat in self.able_cats
                         if not cat.status.rank.is_any_medicine_rank()
                     ]
                     if len(able_no_med) < 6:
-                        able_no_med = self.patrolling_cats
+                        able_no_med = self.able_cats
                     self.current_patrol += sample(able_no_med, k=6)
                 else:
-                    self.current_patrol += sample(self.patrolling_cats, k=6)
+                    self.current_patrol += sample(self.able_cats, k=6)
             self.update_cat_images_buttons()
             self.update_button()
         elif event.ui_element == self.elements["remove_all"]:
@@ -478,13 +478,13 @@ class PatrolScreen(Screens):
 
             able_no_med = [
                 cat
-                for cat in self.patrolling_cats
+                for cat in self.able_cats
                 if not cat.status.rank.is_any_medicine_rank()
             ]
             if get_clan_setting("random med cat"):
-                able_no_med = self.patrolling_cats
+                able_no_med = self.able_cats
             if len(able_no_med) == 0:
-                able_no_med = self.patrolling_cats
+                able_no_med = self.able_cats
             if len(self.current_patrol) >= 6 or len(able_no_med) < 1:
                 self.elements["add_one"].disable()
                 self.elements["random"].disable()
@@ -1005,7 +1005,6 @@ class PatrolScreen(Screens):
         previous page buttons."""
         self.clear_cat_buttons()  # Clear all the cat buttons
 
-        self.patrolling_cats = []
         self.able_cats = []
 
         # ASSIGN TO ABLE CATS
@@ -1026,25 +1025,10 @@ class PatrolScreen(Screens):
                 else:
                     self.able_cats.append(the_cat)
 
-        total_cats = len(self.able_cats) + len(game.patrolled)
-        percent = round(get_config("patrol_generation.patrolling_percent") * total_cats) - 1
-
-        # Getting stuck in a loop here! need to figure out a way to stop this from happening. Otherwise working
-        while len(self.patrolling_cats) < percent:
-            if not self.able_cats:
-                break
-            c = choice(self.able_cats)
-            print("picked a kitty")
-            if c not in self.patrolling_cats:
-                self.patrolling_cats.append(c)
-                print("appended kitty", len(self.patrolling_cats), "/", percent)
-
-        print(percent, "cats can patrol. Chosen cats:", self.patrolling_cats)
-
-        if not self.patrolling_cats:
+        if not self.able_cats:
             all_pages = []
         else:
-            all_pages = self.get_list_chunks(self.patrolling_cats, 15)
+            all_pages = self.get_list_chunks(self.able_cats, 15)
 
         self.current_page = max(1, min(self.current_page, len(all_pages)))
 
@@ -1299,7 +1283,7 @@ class PatrolScreen(Screens):
                     ui_scale(pygame.Rect((148, -4), (104, 26))),
                     (
                         "screens.patrol.select"
-                        if self.mate in self.patrolling_cats
+                        if self.mate in self.able_cats
                         else "screens.patrol.unavailable"
                     ),
                     get_button_dict(ButtonStyles.HEADER_MIRRORED, (104, 26)),
@@ -1308,7 +1292,7 @@ class PatrolScreen(Screens):
                     anchors={"top_target": self.elements["mate_frame"]},
                 )
                 # Disable mate_button if the cat is not able to go on a patrol
-                if self.mate not in self.patrolling_cats:
+                if self.mate not in self.able_cats:
                     self.elements["mate_button"].disable()
 
                 # Buttons to cycle between mates
@@ -1397,7 +1381,7 @@ class PatrolScreen(Screens):
                         ui_scale(pygame.Rect((549, -4), (104, 26))),
                         (
                             "screens.patrol.select"
-                            if self.app_mentor in self.patrolling_cats
+                            if self.app_mentor in self.able_cats
                             else "screens.patrol.unavailable"
                         ),
                         get_button_dict(ButtonStyles.HEADER_MIRRORED, (104, 26)),
@@ -1406,7 +1390,7 @@ class PatrolScreen(Screens):
                         anchors={"top_target": self.elements["app_mentor_frame"]},
                     )
                     # Disable mate_button if the cat is not able to go on a patrol
-                    if self.app_mentor not in self.patrolling_cats:
+                    if self.app_mentor not in self.able_cats:
                         self.elements["app_mentor_button"].disable()
 
                     # Buttons to cycle between apprentices
