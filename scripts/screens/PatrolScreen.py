@@ -1031,7 +1031,6 @@ class PatrolScreen(Screens):
             get_config("patrol_generation.patrolling_percent") * total_cats
         ) - len(game.patrolled)
 
-        # Getting stuck in a loop here! need to figure out a way to stop this from happening. Otherwise working
         for the_cat in self.able_cats:
             if len(self.patrolling_cats) < percent:
                 if (
@@ -1051,7 +1050,6 @@ class PatrolScreen(Screens):
                         self.patrolling_cats.append(the_cat)
             else:
                 break
-            
 
         if not self.patrolling_cats:
             all_pages = []
