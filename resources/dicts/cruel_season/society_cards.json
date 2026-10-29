@@ -53,7 +53,7 @@
     }
   },
   "patrol_rota": {
-    "card_art": "",
+    "card_art": "society/pride_and_joy.png",
     "modifiers": {
       "patrol_generation.patrolling_percent": 0.5
     }

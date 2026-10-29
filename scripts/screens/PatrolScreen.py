@@ -1032,10 +1032,8 @@ class PatrolScreen(Screens):
         ) - len(game.patrolled)
 
         # Getting stuck in a loop here! need to figure out a way to stop this from happening. Otherwise working
-        while len(self.patrolling_cats) < percent:
-            if not self.able_cats:
-                break
-            for the_cat in self.able_cats:
+        for the_cat in self.able_cats:
+            if len(self.patrolling_cats) < percent:
                 if (
                     the_cat.ID not in game.patrolled
                     and the_cat.status.rank.is_allowed_to_patrol()
@@ -1051,6 +1049,9 @@ class PatrolScreen(Screens):
                             self.patrolling_cats.append(the_cat)
                     else:
                         self.patrolling_cats.append(the_cat)
+            else:
+                break
+            
 
         if not self.patrolling_cats:
             all_pages = []
