@@ -139,6 +139,8 @@
         "temporary_weakness": "temporary weakness",
         "temporary_weakness_alert": "hurt!",
         "stinky": "stinky",
-        "stinky_alert": "stinky!"
+        "stinky_alert": "stinky!",
+        "white_blindness": "white blindness",
+        "white_blindness_alert": "sick!"
     }
 }

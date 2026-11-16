@@ -1,0 +1,19 @@
+[
+    {
+        "event_id": "death_whiteblindness0",
+        "strings": [
+            "m_c succumed to the white blindness."
+        ],
+        "involved_cats": {
+            "m_c": {}
+        },
+        "death": [
+            {
+                "cats": [
+                    "m_c"
+                ],
+                "history": "m_c died from the white blindness."
+            }
+        ]
+    }
+]
